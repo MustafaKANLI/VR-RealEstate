@@ -57,13 +57,21 @@
                               <div class="media">
                                 <div class="media-size-email">
                                   <img
-                                    class="mr-3"
-                                    src="assets/images/marker-icon.png"
+                                    class="mr-3 rounded-circle"
+                                    src="assets/images/user/user.png"
                                     alt=""
                                   />
                                 </div>
                                 <div class="media-body">
-                                  <h6 class="f-w-600">House</h6>
+                                  <h6 class="f-w-600">
+                                    {{
+                                      clickedHouse?.user.firstName +
+                                        " " +
+                                        clickedHouse?.user.lastName
+                                    }}
+                                  </h6>
+                                  <p>{{ clickedHouse?.user.email }}</p>
+                                  <p>{{ clickedHouse?.user.phoneNumber }}</p>
                                 </div>
                               </div>
 

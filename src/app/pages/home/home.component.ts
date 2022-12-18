@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit {
   public doubleClicked = false;
   public house: any;
   public token: any = null;
+  public filteredHouse: any;
 
   async ngOnInit() {
     // if there is no location id = 0, get the current location
@@ -155,6 +156,13 @@ export class HomeComponent implements OnInit {
     this.clickedMarker = true;
     this.doubleClicked = false;
     console.log(event);
+
+    // await this.houseService.getRealEstateAgentHouses().subscribe((res: any) => {
+    //   console.log(res);
+    //   this.filteredHouse = res;
+    //   this.filteredHouse = res.data.filter((x) => x.id === event.id);
+    //   // console.log(this.filteredHouse);
+    // });
 
     // console.log(event);
     await this.houseService.getHouseById(event.id).subscribe((res: any) => {
