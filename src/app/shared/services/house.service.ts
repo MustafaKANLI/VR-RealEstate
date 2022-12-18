@@ -35,6 +35,13 @@ export class HouseService {
     });
   }
 
+  getRealEstateAgentHouses(): Observable<HttpResponse<Object>> {
+    const header = this.header();
+    return this.http.get<HttpResponse<Object>>(this.baseUrl + "/House/GetRealEstateAgentHouses", {
+      headers: header,
+    });
+  }
+  
   postHouse(data): Observable<HttpResponse<Object>> {
     const header = this.header();
     return this.http.post<HttpResponse<Object>>(this.baseUrl + "/House", data, {

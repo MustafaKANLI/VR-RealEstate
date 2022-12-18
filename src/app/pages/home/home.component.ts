@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { HouseService } from "src/app/shared/services/house.service";
 import { NgbPopoverConfig } from "@ng-bootstrap/ng-bootstrap";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { HouseService } from "src/app/shared/services/house.service";
+import { RoomService } from "src/app/shared/services/room.service";
+import { AuthService } from "src/app/shared/services/auth.service";
 
 @Component({
   selector: "app-home",
@@ -13,6 +15,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 export class HomeComponent implements OnInit {
   constructor(
     private houseService: HouseService,
+    private roomService: RoomService,
+    private authService: AuthService,
     config: NgbPopoverConfig,
     private fb: FormBuilder
   ) {
@@ -32,6 +36,13 @@ export class HomeComponent implements OnInit {
   public locations: any = [];
   public addHouseForm: FormGroup;
   public clickedHouse: any;
+  public roomList: any;
+  public room: any;
+  public user: any = null;
+  public location: any;
+  public doubleClicked = false;
+  public house: any;
+  public token: any = null;
 
   async ngOnInit() {
     // if there is no location id = 0, get the current location
@@ -40,10 +51,25 @@ export class HomeComponent implements OnInit {
       this.getCurrentPosition(this.locations);
     }
 
-    await this.houseService.getHouses().subscribe((res: any) => {
-      console.log(res);
-      this.locations = res.data;
+    this.token = sessionStorage.getItem("token");
+
+    this.user = await this.authService.getUser().subscribe((res) => {
+      this.user = res;
     });
+
+    if (this.token) {
+      await this.houseService
+        .getRealEstateAgentHouses()
+        .subscribe((res: any) => {
+          //console.log(res);
+          this.locations = res.data;
+        });
+    } else {
+      await this.houseService.getHouses().subscribe((res: any) => {
+        //console.log(res);
+        this.locations = res.data;
+      });
+    }
 
     this.addHouseForm = this.fb.group({
       price: [""],
@@ -63,7 +89,7 @@ export class HomeComponent implements OnInit {
   getCurrentPosition(locations) {
     navigator.geolocation.getCurrentPosition(
       (location) => {
-        console.log(location);
+        //console.log(location);
 
         const myLocation = {
           id: -1,
@@ -80,12 +106,8 @@ export class HomeComponent implements OnInit {
   }
 
   mapClick(event) {
-    console.log(event);
+    // console.log(event);
   }
-
-  public location: any;
-  doubleClicked = false;
-  public house: any;
 
   mapDblClick(event) {
     this.doubleClicked = true;
@@ -95,7 +117,6 @@ export class HomeComponent implements OnInit {
       latitude: String(event.coords.lat),
       longitude: String(event.coords.lng),
     };
-
     this.locations.push(this.house);
   }
 
@@ -125,39 +146,54 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  cancelAddHouse() {
+    this.doubleClicked = false;
+    this.locations.pop();
+  }
+
   async markerClick(event) {
     this.clickedMarker = true;
     this.doubleClicked = false;
 
-    console.log(event);
+    // console.log(event);
     await this.houseService.getHouseById(event.id).subscribe((res: any) => {
-      console.log(res);
+      // console.log(res);
       this.clickedHouse = res.data;
+    });
+    await this.roomService.getByHouseId(event.id).subscribe((res: any) => {
+      this.roomList = res.data;
+      //  console.log("room list", this.roomList);
     });
   }
 
-  markerRightClick(event) {
-    //remove marker
-    console.log(event);
-    let index = this.locations.findIndex((item) => item.id == event.id);
+  async addMeetingRoom() {
+    const randomNumber = this.generateSixDigitNumber();
+    const id = this.clickedHouse.id;
 
-    console.log(event.id);
-    if (index !== -1 && event.id !== 0) {
-      this.locations.splice(index, 1);
-      localStorage.setItem("locations", JSON.stringify(this.locations));
-    }
+    this.room = {
+      houseID: id,
+      roomNumber: randomNumber,
+    };
+
+    await this.roomService.postRoom(this.room).subscribe({
+      next: (res) => {
+        // console.log(res);
+        alert("Meeting room added");
+
+        this.roomService.getByHouseId(id).subscribe((res: any) => {
+          this.roomList = res.data;
+          // console.log("room list", this.roomList);
+        });
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
-  mapRightClick(event) {
-    console.log(event);
-    // const obj = {
-    //   lat: event.coords.lat,
-    //   lng: event.coords.lng,
-    // };
-    // this.locations.push(obj);
+  generateSixDigitNumber(): number {
+    return Math.floor(Math.random() * 900000) + 100000;
   }
 
-  togglePopover() {
-    console.log("toggle");
-  }
+  cancelMeetingRoom() {}
 }
