@@ -4,7 +4,7 @@
     <div class="left-header col horizontal-wrapper pl-0" hidden></div>
     <div class="nav-right col-12 pull-right right-header p-0">
       <ul class="nav-menus">
-        <li class="profile-nav onhover-dropdown p-0">
+        <li class="profile-nav onhover-dropdown p-0" *ngIf="token !== null">
           <div class="media profile-media">
             <img
               class="b-r-10"
@@ -18,11 +18,11 @@
             </div>
           </div>
           <ul class="profile-dropdown onhover-show-div">
-            <li>
+            <!-- <li >
               <div (click)="profileClick()">
                 <span>Profile</span>
               </div>
-            </li>
+            </li> -->
             <!-- <li><a href="#"><app-feather-icons [icon]="'mail'"></app-feather-icons><span>Inbox</span></a></li>
                 <li><a href="#"><app-feather-icons [icon]="'file-text'"></app-feather-icons><span>Taskboard</span></a></li>
                 <li><a href="#"><app-feather-icons [icon]="'settings'"></app-feather-icons><span>Settings</span></a></li> -->
@@ -31,6 +31,28 @@
             </li>
           </ul>
         </li>
+        <div
+          class="profile-nav onhover-dropdown p-0"
+          style="display: flex"
+          *ngIf="token === null"
+        >
+          <div>
+            <button
+              [routerLink]="'/auth/login'"
+              class="btn btn-outline-primary btn-block"
+            >
+              Login
+            </button>
+          </div>
+          <div>
+            <button
+              [routerLink]="'/auth/register'"
+              class="btn btn-outline-info btn-block"
+            >
+              Register
+            </button>
+          </div>
+        </div>
       </ul>
     </div>
   </div>

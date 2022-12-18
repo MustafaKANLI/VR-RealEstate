@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { AuthService } from "src/app/shared/services/auth.service";
-
 
 @Component({
   templateUrl: "./register.component.html",
@@ -14,54 +14,18 @@ export class RegisterComponent implements OnInit {
   public customerList = [];
 
   constructor(
-
-    public aServ: AuthService,
+    public authServ: AuthService,
     private fb: FormBuilder,
-
+    private router: Router
   ) {
     this.registerForm = this.fb.group(
       {
         firstName: ["", [Validators.required]],
         lastName: ["", [Validators.required]],
-        username: [
-          "",
-          [Validators.required, Validators.pattern("^[a-zA-Z -']+")],
-        ],
         email: ["", [Validators.required, Validators.email]],
-        customerID: [Number, [Validators.required]],
-        password: [
-          "",
-          [
-            Validators.required,
-            Validators.minLength(5),
-            Validators.maxLength(30),
-          ],
-        ],
-        repassword: [
-          "",
-          [
-            Validators.required,
-            Validators.minLength(5),
-            Validators.maxLength(30),
-          ],
-        ],
-        areaCode: [
-          "",
-          [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(3),
-          ],
-        ],
-        phone: [
-          "",
-          [
-            Validators.required,
-            Validators.minLength(7),
-            Validators.maxLength(7),
-          ],
-        ],
-        agreePrivacy: [false, [Validators.required]],
+        phoneNumber: ["", [Validators.required]],
+        password: ["", [Validators.required]],
+        confirmPassword: ["", [Validators.required]],
       },
       {
         validator: this.checkRepassword("password", "repassword"),
@@ -70,28 +34,24 @@ export class RegisterComponent implements OnInit {
   }
 
   checkRepassword(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
-
-      if (
-        matchingControl.errors &&
-        !matchingControl.errors.confirmedValidator
-      ) {
-        return;
-      }
-
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({ confirmedValidator: true });
-      } else {
-        matchingControl.setErrors(null);
-      }
-    };
+    // return (formGroup: FormGroup) => {
+    //   const control = formGroup.controls[controlName];
+    //   const matchingControl = formGroup.controls[matchingControlName];
+    //   if (
+    //     matchingControl.errors &&
+    //     !matchingControl.errors.confirmedValidator
+    //   ) {
+    //     return;
+    //   }
+    //   if (control.value !== matchingControl.value) {
+    //     matchingControl.setErrors({ confirmedValidator: true });
+    //   } else {
+    //     matchingControl.setErrors(null);
+    //   }
+    // };
   }
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 
   showPassword1() {
     this.show1 = !this.show1;
@@ -100,11 +60,20 @@ export class RegisterComponent implements OnInit {
     this.show2 = !this.show2;
   }
   register() {
-    if (this.registerForm.value.agreePrivacy) {
-      //this.aServ.register(this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.username, this.registerForm.value.firstName + " " + this.registerForm.value.lastName, this.registerForm.value.areaCode + "" + this.registerForm.value.phone, this.registerForm.value.customerID);
-    } else {
-      alert("Üye olmak için gizlilik sözleşmesini onaylamalısınız!");
-      this.registerForm.reset();
-    }
+    var data = this.registerForm.value;
+    this.authServ.register(data).subscribe(
+      (res) => {
+        // Save the JWT token in a cookie or local storage for later use.
+
+        console.log(res);
+
+        // var token: any = res.data.jwToken;
+        // sessionStorage.setItem("token", token);
+        this.router.navigateByUrl("/auth/login");
+      },
+      (error) => {
+        // Handle the error.
+      }
+    );
   }
 }

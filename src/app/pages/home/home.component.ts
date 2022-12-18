@@ -154,6 +154,7 @@ export class HomeComponent implements OnInit {
   async markerClick(event) {
     this.clickedMarker = true;
     this.doubleClicked = false;
+    console.log(event);
 
     // console.log(event);
     await this.houseService.getHouseById(event.id).subscribe((res: any) => {

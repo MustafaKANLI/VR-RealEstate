@@ -11,8 +11,10 @@ export class HeaderComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService) {}
 
   public user: any = null;
+  public token: any = null;
 
   async ngOnInit() {
+    this.token = sessionStorage.getItem("token");
     this.user = await this.authService.getUser().subscribe((res) => {
       this.user = res;
     });

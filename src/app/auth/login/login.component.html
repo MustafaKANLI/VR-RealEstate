@@ -5,7 +5,7 @@
         <div>
           <div class="login-main">
             <div>
-              <a class="logo">
+              <a class="logo" [routerLink]="'/'">
                 <img
                   class="img-fluid for-light"
                   src="https://img.freepik.com/premium-vector/real-estate-logo-design_260747-324.jpg?w=200"
@@ -14,17 +14,15 @@
               </a>
             </div>
             <form class="theme-form" [formGroup]="loginForm">
-              <h4 class="text-center">Hesapta oturum açın</h4>
-              <p class="text-center">
-                Giriş yapmak için e-posta adresinizi ve şifrenizi girin.
-              </p>
+              <h4 class="text-center">Login Page</h4>
+              <p class="text-center">Enter your email & password to login</p>
               <div class="form-group">
-                <label class="col-form-label">E-Posta </label>
+                <label class="col-form-label">E-mail </label>
                 <input
                   class="form-control"
                   type="email"
                   required=""
-                  placeholder="kullaniciadi@mail.com"
+                  placeholder="E-mail"
                   formControlName="email"
                 />
                 <div
@@ -34,7 +32,7 @@
                   "
                   class="text text-danger mt-1"
                 >
-                  Email girmek zorunludur.
+                  Email is required.
                 </div>
                 <div
                   *ngIf="
@@ -43,17 +41,17 @@
                   "
                   class="text text-danger mt-1"
                 >
-                  Lütfen geçerli bir email adresi giriniz.
+                  Email is not valid.
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-form-label">Şifre</label>
+                <label class="col-form-label">Password</label>
                 <input
                   class="form-control"
                   [type]="show ? 'text' : 'password'"
                   formControlName="password"
                   required=""
-                  placeholder="*********"
+                  placeholder="Password"
                 />
                 <div class="show-hide" (click)="showPassword()" *ngIf="!show">
                   <span class="show"></span>
@@ -68,7 +66,7 @@
                   "
                   class="text text-danger mt-1"
                 >
-                  Şifre girmek zorunludur.
+                  Password is required.
                 </div>
               </div>
               <div class="form-group mb-0">
@@ -79,9 +77,10 @@
                   (click)="login()"
                   type="button"
                 >
-                  <span>{{ "Giriş" }}</span>
+                  <span>{{ "Login" }}</span>
                 </button>
               </div>
+
               <!-- <h6 class="text-muted mt-4 or">Or Sign in with</h6>
                 <div class="social mt-4">
                   <div class="btn-showcase">
@@ -97,6 +96,13 @@
                   </div>
                 </div> -->
             </form>
+            <br />
+            <div class="text-center">
+              <p class="mt-4 mb-0">
+                If you don't have an account,
+                <a class="ml-2" [routerLink]="'/auth/register'">Register</a>
+              </p>
+            </div>
           </div>
         </div>
       </div>

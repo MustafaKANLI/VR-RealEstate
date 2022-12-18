@@ -14,10 +14,15 @@
               </a>
             </div>
             <form class="theme-form" [formGroup]="registerForm">
-              <h4>Üye Ol</h4>
-              <p>Hesap oluşturmak için kişisel bilgilerinizi giriniz</p>
+              <h4>Register Page</h4>
+              <p>
+                Enter your personal details to create an account and start
+                exploring
+              </p>
               <div class="form-group">
-                <label class="col-form-label pt-0">İsim Soyisim</label>
+                <label class="col-form-label pt-0"
+                  >First Name and Last Name</label
+                >
                 <div class="form-row">
                   <div class="col-6">
                     <input
@@ -25,7 +30,7 @@
                       formControlName="firstName"
                       type="text"
                       required=""
-                      placeholder="İsim"
+                      placeholder="First Name"
                       required
                     />
                   </div>
@@ -36,7 +41,7 @@
                       formControlName="lastName"
                       type="text"
                       required=""
-                      placeholder="Soyisim"
+                      placeholder="Last Name"
                       required
                     />
                   </div>
@@ -47,7 +52,7 @@
                     "
                     class="text text-danger mt-1"
                   >
-                    İsim girmek zorunludur.
+                    First name is required.
                   </div>
                   <br />
                   <div
@@ -57,18 +62,18 @@
                     "
                     class="text text-danger mt-1"
                   >
-                    Soyisim girmek zorunludur.
+                    Last name is required.
                   </div>
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-form-label">E-mail Adresi</label>
+                <label class="col-form-label">E-mail </label>
                 <input
                   class="form-control"
                   formControlName="email"
                   type="email"
                   required=""
-                  placeholder="app@yourmail.com"
+                  placeholder="E-mail"
                 />
                 <div
                   *ngIf="
@@ -77,7 +82,7 @@
                   "
                   class="text text-danger mt-1"
                 >
-                  Email girmek zorunludur.
+                  Email is required.
                 </div>
                 <div
                   *ngIf="
@@ -86,108 +91,34 @@
                   "
                   class="text text-danger mt-1"
                 >
-                  Lütfen geçerli bir email adresi giriniz.
+                  Please enter a valid email address.
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-form-label pt-0">Telefon</label>
+                <label class="col-form-label pt-0">Phone Number</label>
                 <div class="form-row">
-                  <div class="col-3">
+                  <div class="col">
                     <input
                       class="form-control"
                       id="areaCode"
-                      formControlName="areaCode"
+                      formControlName="phoneNumber"
                       type="text"
                       required=""
                       placeholder="5**"
                     />
                   </div>
-                  <div class="col-9">
-                    <input
-                      class="form-control"
-                      formControlName="phone"
-                      type="text"
-                      required=""
-                      placeholder="***-**-**"
-                    />
-                    <div
-                      *ngIf="
-                        registerForm.controls.areaCode.touched &&
-                        (registerForm.controls.areaCode.errors?.minlength ||
-                          registerForm.controls.areaCode.errors?.maxlength)
-                      "
-                      class="text text-danger mt-1"
-                    >
-                      Alan Kodu 3 karakterden oluşmalıdır.
-                    </div>
-                    <div
-                      *ngIf="
-                        registerForm.controls.phone.touched &&
-                        (registerForm.controls.phone.errors?.minlength ||
-                          registerForm.controls.phone.errors?.maxlength)
-                      "
-                      class="text text-danger mt-1"
-                    >
-                      Lütfen girdiğiniz telefon numarasını kontrol ediniz.
-                    </div>
-                  </div>
                 </div>
               </div>
+
               <div class="form-group">
-                <label class="col-form-label">Kullanıcı Adı</label>
-                <input
-                  class="form-control"
-                  formControlName="username"
-                  type="text"
-                  required=""
-                  placeholder="Kullanıcı Adınız"
-                />
-                <div
-                  *ngIf="
-                    registerForm.controls.username.touched &&
-                    registerForm.controls.username.errors?.required
-                  "
-                  class="text text-danger mt-1"
-                >
-                  Kullanıcı adı girmek zorunludur.
-                </div>
-                <div
-                  *ngIf="
-                    registerForm.controls.username.touched &&
-                    registerForm.controls.username.errors?.pattern
-                  "
-                  class="text text-danger mt-1"
-                >
-                  Lütfen sadece ingilizce karakterler kullanınız.
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-form-label">Firma</label>
-                <select
-                  class="form-control"
-                  formControlName="customerID"
-                  required
-                >
-                  <option value="" selected hidden>
-                    Lütfen Firmanızı Seçiniz...
-                  </option>
-                  <option
-                    [value]="item.id"
-                    *ngFor="let item of this.customerList"
-                  >
-                    {{ item.name }}
-                  </option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="col-form-label">Şifre</label>
+                <label class="col-form-label">Password</label>
                 <input
                   class="form-control"
                   formControlName="password"
                   [type]="show1 ? 'text' : 'password'"
                   name="login[password]"
                   required=""
-                  placeholder="*********"
+                  placeholder="Password"
                 />
                 <div class="show-hide" (click)="showPassword1()" *ngIf="!show1">
                   <span class="show"></span>
@@ -202,27 +133,18 @@
                   "
                   class="text text-danger mt-1"
                 >
-                  Şifre girmek zorunludur.
-                </div>
-                <div
-                  *ngIf="
-                    registerForm.controls.password.touched &&
-                    registerForm.controls.password.errors?.minlength
-                  "
-                  class="text text-danger mt-1"
-                >
-                  Şifreniz en az 8 karakterden oluşmalıdır.
+                  Password is required.
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-form-label">Tekrar Şifre</label>
+                <label class="col-form-label">Confirm Password</label>
                 <input
                   class="form-control"
-                  formControlName="repassword"
+                  formControlName="confirmPassword"
                   [type]="show2 ? 'text' : 'password'"
                   name="login[password]"
                   required=""
-                  placeholder="*********"
+                  placeholder="Confirm Password"
                 />
                 <div class="show-hide" (click)="showPassword2()" *ngIf="!show2">
                   <span class="show"></span>
@@ -237,29 +159,18 @@
                   "
                   class="text text-danger mt-1"
                 >
-                  Girilen şifreler aynı olmalıdır.
+                  Passwords do not match.
                 </div>
               </div>
 
               <div class="form-group mb-0">
-                <div class="checkbox p-0">
-                  <input
-                    id="checkbox1"
-                    formControlName="agreePrivacy"
-                    type="checkbox"
-                  />
-                  <label class="text-muted" for="checkbox1"
-                    ><a class="ml-2" routerLink="/">Gizlilik Sözleşmesini</a>
-                    Onaylıyorum</label
-                  >
-                </div>
                 <button
                   (click)="register()"
                   class="btn btn-primary btn-block"
                   type="button"
                   [disabled]="this.registerForm.invalid"
                 >
-                  Hesabı Oluştur
+                  Create Account
                 </button>
               </div>
               <!-- <h6 class="text-muted mt-4 or">Ya da</h6>
@@ -277,11 +188,8 @@
                   </div>
                 </div> -->
               <p class="mt-4 mb-0">
-                Halihazırda bir hesabınız var mı?<a
-                  class="ml-2"
-                  [routerLink]="'/auth/login'"
-                  >Giriş Yapın</a
-                >
+                If you are have an account already,
+                <a class="ml-2" [routerLink]="'/auth/login'">Login</a>
               </p>
             </form>
           </div>
