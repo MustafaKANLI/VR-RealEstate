@@ -1,0 +1,244 @@
+<br />
+<div class="container-fluid" style="margin-top: 50px !important">
+  <div class="row">
+    <div class="card">
+      <div class="card-header">
+        <h3>Real Estate</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3>Map</h3>
+              </div>
+              <div class="card-body">
+                <label
+                  >Double click to the map for the add a new location</label
+                >
+                <div class="row">
+                  <div class="col">
+                    <agm-map
+                      [latitude]="locations[0]?.latitude"
+                      [longitude]="locations[0]?.longitude"
+                      (mapClick)="mapClick($event)"
+                      (mapDblClick)="mapDblClick($event)"
+                      (mapRightClick)="mapRightClick($event)"
+                      [disableDoubleClickZoom]="true"
+                    >
+                      <agm-marker
+                        *ngFor="let location of locations"
+                        [latitude]="location?.latitude"
+                        [longitude]="location?.longitude"
+                        (markerClick)="markerClick(location)"
+                        [iconUrl]="icon"
+                        [opacity]="location.id == 0 ? 0.7 : 1"
+                      >
+                      </agm-marker>
+                    </agm-map>
+                  </div>
+
+                  <div class="col" *ngIf="clickedMarker !== false">
+                    <div class="col-xl box-col-6">
+                      <div class="email-left-aside">
+                        <div class="card">
+                          <div class="card-body">
+                            <button
+                              class="close"
+                              type="button"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                              data-original-title=""
+                              title=""
+                              (click)="clickedMarker = false"
+                            >
+                              <span aria-hidden="true">×</span>
+                            </button>
+                            <div class="email-app-sidebar left-bookmark">
+                              <div class="media">
+                                <div class="media-size-email">
+                                  <img
+                                    class="mr-3 rounded-circle"
+                                    src="assets/images/user/user.png"
+                                    alt=""
+                                  />
+                                </div>
+                                <div class="media-body">
+                                  <h6 class="f-w-600">MARK JENCO</h6>
+                                  <p>Markjecno@gmail.com</p>
+                                </div>
+                              </div>
+
+                              <table
+                                class="table"
+                                style="margin: 1rem 0 !important"
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td class="f-w-600">Floor</td>
+                                    <td>{{ clickedHouse?.floor }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="f-w-600">Square Meter</td>
+                                    <td>{{ clickedHouse.squareMeter }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="f-w-600">Is Furnished?</td>
+                                    <td>{{ clickedHouse.furnished }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col" *ngIf="doubleClicked === true">
+                    <div class="col-xl box-col-6">
+                      <div class="email-left-aside">
+                        <div class="card">
+                          <div class="card-body">
+                            <button
+                              class="close"
+                              type="button"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                              data-original-title=""
+                              title=""
+                              (click)="doubleClicked = false"
+                            >
+                              <span aria-hidden="true">×</span>
+                            </button>
+                            <div class="email-app-sidebar left-bookmark">
+                              <div class="media">
+                                <div class="media-body">
+                                  <h6 class="f-w-600">Add new house</h6>
+                                </div>
+                              </div>
+                            </div>
+                            <form
+                              class="form-bookmark needs-validation"
+                              id="bookmark-form"
+                              novalidate=""
+                              [formGroup]="addHouseForm"
+                            >
+                              <div class="form-row">
+                                <div class="form-group col-md-12">
+                                  <label for="bm-userName">Description</label>
+                                  <textarea
+                                    class="form-control"
+                                    required=""
+                                    autocomplete="off"
+                                    formControlName="description"
+                                  ></textarea>
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-12">
+                                  <label for="bm-userName">Price</label>
+                                  <input
+                                    class="form-control"
+                                    formControlName="price"
+                                    type="number"
+                                    required
+                                    autocomplete="off"
+                                  />
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-12">
+                                  <label for="bm-userName">Floor</label>
+                                  <input
+                                    class="form-control"
+                                    formControlName="floor"
+                                    type="number"
+                                    required
+                                    autocomplete="off"
+                                  />
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-12">
+                                  <label for="bm-userName">Square Meter</label>
+                                  <input
+                                    class="form-control"
+                                    formControlName="squareMeter"
+                                    type="number"
+                                    required
+                                    autocomplete="off"
+                                  />
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-12">
+                                  <label for="bm-userName">Asset Link</label>
+                                  <input
+                                    class="form-control"
+                                    formControlName="assetLink"
+                                    type="text"
+                                    required
+                                    autocomplete="off"
+                                  />
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-12">
+                                  <label for="bm-userName">Image Link</label>
+                                  <input
+                                    class="form-control"
+                                    formControlName="imageLink"
+                                    type="text"
+                                    required
+                                    autocomplete="off"
+                                  />
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-12">
+                                  <label class="text-muted" for="checkbox1">
+                                    Is Furnished</label
+                                  >
+                                  <input
+                                    id="checkbox1"
+                                    class="checkbox_animated"
+                                    formControlName="furnished"
+                                    type="checkbox"
+                                  />
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-12">
+                                  <button
+                                    class="btn btn-success mr-1"
+                                    id="Bookmark"
+                                    (click)="addHouse()"
+                                  >
+                                    Kaydet
+                                  </button>
+                                  <button
+                                    class="btn btn-danger"
+                                    type="button"
+                                    data-dismiss="modal"
+                                    (click)="closeModal()"
+                                  >
+                                    İptal
+                                  </button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

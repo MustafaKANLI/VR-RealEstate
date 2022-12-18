@@ -1,0 +1,17 @@
+<div
+  [ngClass]="layout.config.settings.layout_type"
+  [class]="layout.config.settings.layout_version"
+>
+  <div class="page-wrapper" id="canvas-bookmark" [ngClass]="layoutClass">
+    <app-header></app-header>
+
+    <!-- Page Body Start-->
+    <div class="page-body-wrapper">
+      <div class="page-body">
+        <main>
+          <router-outlet #o="outlet"></router-outlet>
+        </main>
+      </div>
+    </div>
+  </div>
+</div>
